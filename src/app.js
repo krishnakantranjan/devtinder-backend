@@ -1,21 +1,62 @@
 const express = require('express');
 const app = express();
 
+/*
+app.use('/user',
+  (req, res) => {
+  res.send('Route handler 1');
+},
+  (req, res) => {
+    res.send('Route handler 2');
+  }
+);
 
-app.get('/user', (req, res) => {
-  res.send({firstname: 'John', lastname: 'Doe'});
-}); 
+// res.send -> Route handler 1
+*/
+/*
+app.use('/user',
+  (req, res) => {
+  // res.send('Route handler 1');
+},
+  (req, res) => {
+    res.send('Route handler 2');
+  }
+);
 
-app.post('/user', (req, res) => {
-  // saving data to the database
-  res.send('Data saved successfully!');
-}); 
+// request will hang.
+*/
+/*
+app.use('/user',
+  (req, res, next) => {
+    // res.send('Route handler 1');
+    next();
+  },
+  (req, res) => {
+    res.send('Route handler 2');
+  }
+);
+
+// res.send -> Route handler 2
+*/
+/*
+app.use('/user',
+  (req, res, next) => {
+    res.send('Route handler 1');
+    next();
+  },
+  (req, res) => {
+    res.send('Route handler 2');
+  }
+);
+
+// res.send -> Route handler 1
+*/
+
+// We can put route handlers in an array.
+// it work as same.
 
 
-//this will match all routes that are /user.
-app.use('/user', (req, res) => {
-  res.send('Hello, World!');
-}); 
+
 
 
 
