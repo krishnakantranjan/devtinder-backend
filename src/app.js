@@ -1,59 +1,48 @@
 const express = require('express');
 const app = express();
-
 /*
-app.use('/user',
-  (req, res) => {
-  res.send('Route handler 1');
-},
-  (req, res) => {
-    res.send('Route handler 2');
+app.get('/admin/getalldata', (req, res) => {
+  const token = "xyz";
+  const isAuthorised = token === "xyz";
+  if (!isAuthorised) {
+    return res.status(403).send('Forbidden');
   }
-);
-
-// res.send -> Route handler 1
-*/
-/*
-app.use('/user',
-  (req, res) => {
-  // res.send('Route handler 1');
-},
-  (req, res) => {
-    res.send('Route handler 2');
+  else {
+    res.send('Data sent successfully');
   }
-);
+});
 
-// request will hang.
+app.get('/admin/deleteUser', (req, res) => {
+  const token = "xyz";
+  const isAuthorised = token === "xyz";
+  if (!isAuthorised) {
+    return res.status(403).send('Unauthorized');
+  }
+  else {
+    res.send('User deleted successfully');
+  }
+});
 */
-/*
-app.use('/user',
-  (req, res, next) => {
-    // res.send('Route handler 1');
+
+// Middleware to check authorization
+app.use('/admin', (req, res, next) => {
+  const token = "xyz";
+  const isAuthorized = token === "xyz"; // Replace with actual authorization logic
+  if (!isAuthorized) {
+    return res.status(403).send('Unauthorized');
+  }
+  else {
     next();
-  },
-  (req, res) => {
-    res.send('Route handler 2');
   }
-);
+});
 
-// res.send -> Route handler 2
-*/
-/*
-app.use('/user',
-  (req, res, next) => {
-    res.send('Route handler 1');
-    next();
-  },
-  (req, res) => {
-    res.send('Route handler 2');
-  }
-);
+app.get('/admin/getalldata', (req, res) => {
+  res.send('Data sent successfully');
+});
 
-// res.send -> Route handler 1
-*/
-
-// We can put route handlers in an array.
-// it work as same.
+app.get('/admin/deleteUser', (req, res) => {
+  res.send('User deleted successfully');
+});
 
 
 
