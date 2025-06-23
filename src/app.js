@@ -2,21 +2,12 @@ const express = require('express');
 const { adminAuth, userAuth } = require('./Middlewares/auth');
 const app = express();
 
-// Middleware to check authorization
-app.use('/admin', adminAuth);
-
-app.use('/user', userAuth, (req, res, next) => {
-  res.send('User data sent successfully');
-});
-
-
-app.get('/admin/getAllData', (req, res) => {
-  res.send('Data sent successfully');
-});
-
-app.get('/admin/deleteUser', (req, res) => {
-  res.send('User deleted successfully');
-});
+app.get('/', (err, req, res, next) => {
+  if(err) {
+    return res.status(500).send('Internal Server Error');
+  }
+  res.send('Welcome to the Home Page');
+})
 
 
 
