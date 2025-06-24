@@ -1,16 +1,39 @@
 const express = require('express');
-const { adminAuth, userAuth } = require('./Middlewares/auth');
 const app = express();
+const connectDB = require('./config/database');
+const User = require('./models/user')
 
-app.get('/', (err, req, res, next) => {
-  if(err) {
-    return res.status(500).send('Internal Server Error');
+app.post('/signup', async (req, res) => {
+  //Creating a new instance of User model
+  const user = new User({
+    firstName: "Rohan",
+    lastName: "Kumar",
+    password: "Rohan@123",
+    age: 20,
+    gender: "M",
+  });
+  try {
+    await user.save();
+    res.send("User added successfully");
   }
-  res.send('Welcome to the Home Page');
-})
+  catch (err) {
+    res.status(400).send("Error" + err.message);
+  }
+
+});
 
 
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-}); 
+
+
+
+connectDB().then(() => {
+  console.log('Database connected successfully');
+  app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+  });
+}).catch((error) => {
+  console.error('Database connection failed:', error.message);
+});
+
+
