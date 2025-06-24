@@ -16,6 +16,21 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+//Getting users by firstname
+app.get('/user', async (req, res) => {
+  const userFirstname = req.body.firstName;
+
+  try {
+    const user = await User.find({ firstName: userFirstname });
+    if (user.length === 0) {
+      res.status(400).send("User not found");
+    }
+    res.send(user);
+  } catch (err) {
+    res.status(400).send("Something went wrong" + err.message);
+  }
+});
+
 
 connectDB().then(() => {
   console.log('Database connected successfully');
