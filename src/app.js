@@ -3,28 +3,13 @@ const app = express();
 const connectDB = require('./config/database');
 const User = require('./models/user')
 
+app.use(express.json());
+
 app.post('/signup', async (req, res) => {
-  //Creating a new instance of User model
-  const user = new User({
-    firstName: "Rohan",
-    lastName: "Kumar",
-    password: "Rohan@123",
-    age: 20,
-    gender: "M",
-  });
-  try {
-    await user.save();
-    res.send("User added successfully");
-  }
-  catch (err) {
-    res.status(400).send("Error" + err.message);
-  }
-
+  // console.log(req.body); // Undefined
+  // We need a middleware to change the json into js object -> app.use(express.json());
+  console.log(req.body); 
 });
-
-
-
-
 
 
 connectDB().then(() => {
