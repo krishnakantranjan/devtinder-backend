@@ -6,9 +6,14 @@ const User = require('./models/user')
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
-  // console.log(req.body); // Undefined
-  // We need a middleware to change the json into js object -> app.use(express.json());
-  console.log(req.body); 
+  const user = new User(req.body);
+
+  try {
+    await user.save();
+    res.send("User added successfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong" + err.message);
+  }
 });
 
 
