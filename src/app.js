@@ -16,20 +16,14 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-//Getting users by firstname
-app.get('/user', async (req, res) => {
-  const userFirstname = req.body.firstName;
-
+app.get('/feed', async (req, res) => {
   try {
-    const user = await User.find({ firstName: userFirstname });
-    if (user.length === 0) {
-      res.status(400).send("User not found");
-    }
-    res.send(user);
+    const users = await User.find({});
+    res.send(users);
   } catch (err) {
-    res.status(400).send("Something went wrong" + err.message);
+    res.status(400).send("Something went wrong");
   }
-});
+})
 
 
 connectDB().then(() => {
