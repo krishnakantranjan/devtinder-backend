@@ -26,6 +26,32 @@ app.get('/feed', async (req, res) => {
 })
 
 
+app.patch('/user/:userId', async (req, res) => {
+  const userId = req.params?.userId;
+  const data = req.body;
+
+  try {
+    const UPDATE_ALLOWED = ["firstName", "lastName", "gender", "age"];
+    const isUpdateAllowed = Object.keys(data).every((k) => UPDATE_ALLOWED.includes(k));
+
+    if (!isUpdateAllowed) {
+      throw new Error(" Update is not allowed");
+    }
+
+    if (data.age <= 0) {
+      throw new Error(" Age is not valid");
+    }
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+    console.log(user);
+    res.send("Update Successfully");
+  } catch (err) {
+    res.status(400).send("Update Failed" + err.message);
+  }
+});
+
 connectDB().then(() => {
   console.log('Database connected successfully');
   app.listen(3000, () => {
