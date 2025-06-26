@@ -9,10 +9,14 @@ app.post('/signup', async (req, res) => {
   const user = new User(req.body);
 
   try {
+    const existingUser = await User.findOne({ emailId: user.emailId });
+    if (existingUser) {
+      throw new Error(" EmailId already exists: " + user.emailId);
+    }
     await user.save();
-    res.send("User added successfully");
+    res.send(" User added successfully");
   } catch (err) {
-    res.status(400).send("Something went wrong" + err.message);
+    res.status(400).send(" Something went wrong " + err.message);
   }
 });
 
