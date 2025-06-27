@@ -38,6 +38,29 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    // If emailId exist then is give a object of all data that belong to that emailId
+    const user = await User.findOne({ emailId: emailId });
+    console.log(user); // Object of data of user
+    if (!user) {
+      return res.status(400).send("Email does not exist");
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(isPasswordValid); // Boolen value if password matched. 
+    if (isPasswordValid) {
+      res.send("Login Successfully");
+    } else {
+      throw new Error("Wrong Password");
+    }
+  }
+  catch (err) {
+    res.status(400).send("ERROR " + err.message);
+  }
+});
+
 app.get('/feed', async (req, res) => {
   try {
     const users = await User.find({});
@@ -45,7 +68,7 @@ app.get('/feed', async (req, res) => {
   } catch (err) {
     res.status(400).send("Something went wrong");
   }
-})
+});
 
 
 app.patch('/user/:userId', async (req, res) => {
@@ -73,6 +96,16 @@ app.patch('/user/:userId', async (req, res) => {
     res.status(400).send("Update Failed" + err.message);
   }
 });
+
+
+
+
+
+
+
+
+
+
 
 connectDB().then(() => {
   console.log('Database connected successfully');
