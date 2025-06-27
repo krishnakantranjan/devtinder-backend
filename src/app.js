@@ -1,18 +1,36 @@
 const express = require('express');
 const app = express();
 const connectDB = require('./config/database');
-const User = require('./models/user')
-
+const User = require('./models/user');
+const bcrypt = require('bcrypt');
+const { validateSignUpData } = require('./utils/validation');
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
-  const user = new User(req.body);
-
   try {
-    const existingUser = await User.findOne({ emailId: user.emailId });
-    if (existingUser) {
-      throw new Error(" EmailId already exists: " + user.emailId);
-    }
+
+    //Validation
+    validateSignUpData(req);
+    //Encryption
+    const { firstName, lastName, emailId, password, age, gender } = req.body;
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    console.log(passwordHash);
+
+
+    // Createing the instance of user
+    const user = new User(
+      {
+        firstName,
+        lastName,
+        emailId,
+        password: passwordHash,
+        age,
+        gender,
+      }
+    );
+
+    //Save the user
     await user.save();
     res.send(" User added successfully");
   } catch (err) {
