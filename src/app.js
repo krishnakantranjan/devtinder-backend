@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const { validateSignUpData } = require('./utils/validation');
 app.use(express.json());
 app.use(cookieParser());
-
+const { userAuth } = require('./Middlewares/auth');
 
 
 app.post('/signup', async (req, res) => {
@@ -56,7 +56,7 @@ app.post('/login', async (req, res) => {
     if (isPasswordValid) {
 
 
-      const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$2204121");
+      const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$2204121", {expiresIn : "7d"});
       console.log(token);
 
       res.cookie("token", token);
@@ -70,67 +70,20 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/profile', async (req, res) => {
+app.get('/profile', userAuth, async (req, res) => {
   try {
-    const cookies = req.cookies;
-    const { token } = cookies;
-    //Validate the token
-    if (!token) {
-      throw new Error("Invalid Token");
-    }
-    const decoded = await jwt.verify(token, "Dev@Tinder$2204121");
-
-    const { _id } = decoded;
-    const user = await User.findById(_id);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    const user = req.user;
     res.send(user);
   } catch (err) {
     res.status(400).send("ERROR " + err.message);
   }
 });
 
-app.get('/feed', async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (err) {
-    res.status(400).send("Something went wrong");
-  }
+app.post('/sendConnectionRequest', userAuth, (req, res) => {
+  const user = req.user;
+
+  res.send(user.firstName + " sent the connection request!");
 });
-
-
-app.patch('/user/:userId', async (req, res) => {
-  const userId = req.params?.userId;
-  const data = req.body;
-
-  try {
-    const UPDATE_ALLOWED = ["firstName", "lastName", "gender", "age"];
-    const isUpdateAllowed = Object.keys(data).every((k) => UPDATE_ALLOWED.includes(k));
-
-    if (!isUpdateAllowed) {
-      throw new Error(" Update is not allowed");
-    }
-
-    if (data.age <= 0) {
-      throw new Error(" Age is not valid");
-    }
-    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
-      returnDocument: "after",
-      runValidators: true,
-    });
-    console.log(user);
-    res.send("Update Successfully");
-  } catch (err) {
-    res.status(400).send("Update Failed" + err.message);
-  }
-});
-
-
-
-
-
 
 
 
