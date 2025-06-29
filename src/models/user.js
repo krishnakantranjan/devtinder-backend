@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
 const userSchema = mongoose.Schema({
     firstName: {
         type: String,
@@ -36,8 +37,15 @@ const userSchema = mongoose.Schema({
             }
         }
     },
-}, { runValidators: true });
+}, { runValidators: true },
+);
 
 
+userSchema.methods.getJWT = async function () {
+    // DON'T USE ARROW FUNCTION OTHERWISE IT WILL BREAK
+    const user = this;
+    const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$2204121", {expiresIn : "7d"});
+    return token;
+}
 const User = mongoose.model('User', userSchema);
 module.exports = User;
