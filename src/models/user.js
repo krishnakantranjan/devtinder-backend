@@ -44,7 +44,7 @@ const userSchema = mongoose.Schema({
 userSchema.methods.getJWT = async function () {
     // DON'T USE ARROW FUNCTION OTHERWISE IT WILL BREAK
     const user = this;
-    const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$2204121", {expiresIn : "7d"});
+    const token = jwt.sign({ _id: user._id }, "Dev@Tinder$2204121", {expiresIn : "7d"});
     return token;
 }
 const User = mongoose.model('User', userSchema);

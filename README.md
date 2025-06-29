@@ -3,24 +3,24 @@
 
 * APIs
 
-authRouter
+## authRouter
 - post/singup
 - post/login
 - post/logout
 
-profileRouter
+## profileRouter
 - get/profile/view
 - patch/profile/edit
-- patch/profile//password
+- patch/profile/password
 
-userRouter
+## userRouter
 - get /user/feed  (get other profile related to you skills)
 - get /user/connections
 - get /user/requests
 
-Status (intersted, ignored, accepted, rejected)
+* Status (intersted, ignored, accepted, rejected)
 
-requestRouter
+## requestRouter
 - post/request/send/intersted/:userId
 - post/request/send/ignored/:userId
 - post/request/review/accepted/:requestId
