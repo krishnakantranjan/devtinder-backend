@@ -36,7 +36,7 @@
 
 ## userRouter
 - get /user/feed  (get other profile related to you skills)
-- get /user/connections
+- get /user/allconnections
 - get /user/requests
 
 
