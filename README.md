@@ -1,5 +1,20 @@
 # devtinder-backend
 
+## Homework
+- Read about middleware
+- Read documentation of express router
+- Read about index, compound index
+
+
+
+
+
+
+
+
+
+
+
 
 * APIs
 
@@ -25,6 +40,12 @@
 - post/request/send/ignored/:userId
 - post/request/review/accepted/:requestId
 - post/request/review/rejected/:requestId
+
+
+
+
+
+
 
 
 

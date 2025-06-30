@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
     emailId: {
         type: String,
         required: true,
-        unique: true,
+        unique: true, // it also create index
         lowercase: true,
         //DB level validation
         validate(value) {
