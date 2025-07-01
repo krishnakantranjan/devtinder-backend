@@ -1,12 +1,11 @@
 # devtinder-backend
 
 ## Homework
-- Read about middleware
-- Read documentation of express router
-- Read about index, compound index
+- Read about middleware.
+- Read documentation of express router.
+- Read about index, compound index.
 - Read about ref and populate (how to join schema).
-
-
+- Read about query operator ($and, $or, $nin, $ni) etc.
 
 
 
