@@ -52,8 +52,14 @@ userRouter.get('/user/allconnections', userAuth, async (req, res) => {
 
 userRouter.get('/feed', userAuth, async (req, res) => {
   try {
-    const loggedUser = req.user;
 
+    const page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 25;
+    limit = limit > 25 ? 25 : limit;
+    const skip = (page - 1) * limit;
+
+
+    const loggedUser = req.user;
     // Get all connection requests involving this user
     const connectionRequest = await ConnectionRequestModel.find({
       $or: [
@@ -75,7 +81,7 @@ userRouter.get('/feed', userAuth, async (req, res) => {
     // Fetch users not in the connection list and not self
     const filterUsers = await User.find({
       _id: { $nin: Array.from(hideUserFromFeed) }
-    }).select(USER_SAFE_DATA);
+    }).select(USER_SAFE_DATA).skip(skip).limit(limit);
 
     return res.status(200).json({
       message: "Feed users fetched successfully",
